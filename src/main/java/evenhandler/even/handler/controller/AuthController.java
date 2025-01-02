@@ -10,7 +10,6 @@ import evenhandler.even.handler.repository.UserRepository;
 import evenhandler.even.handler.services.auth.AuthServiceImpl;
 import evenhandler.even.handler.services.jwt.UserServiceimpl;
 import evenhandler.even.handler.utill.JWTUtill;
-import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
+
 public class AuthController {
 
     private final AuthServiceImpl authService;
@@ -37,6 +36,14 @@ public class AuthController {
     private final UserServiceimpl userService;
     private final JWTUtill jwtUtill;
     private  final UserRepository userRepository;
+
+    public AuthController(AuthServiceImpl authService, AuthenticationManager authenticationManager, UserServiceimpl userService, JWTUtill jwtUtill, UserRepository userRepository) {
+        this.authService = authService;
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.jwtUtill = jwtUtill;
+        this.userRepository = userRepository;
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> signupCustomer(@RequestBody SignUpRequest signupRequest) {

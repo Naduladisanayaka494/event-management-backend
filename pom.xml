@@ -8,8 +8,8 @@
 		<version>3.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>evenhandler</groupId>
-	<artifactId>even-handler</artifactId>
+	<groupId>eventhandler</groupId>
+	<artifactId>event-handler</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>even-handler</name>
 	<description>Internship-project-Event Handler</description>

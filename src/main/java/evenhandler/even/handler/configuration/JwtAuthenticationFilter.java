@@ -21,10 +21,16 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-@RequiredArgsConstructor
+
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JWTUtill jwtUtill;
     private final UserService userService;
+
+    public JwtAuthenticationFilter(JWTUtill jwtUtill, UserService userService) {
+        this.jwtUtill = jwtUtill;
+        this.userService = userService;
+    }
+
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
