@@ -44,7 +44,7 @@ public class AuthController {
             return new ResponseEntity<>("email already exists",HttpStatus.NOT_ACCEPTABLE);
         UserDto createduserdto  =authService.createdCustomer(signupRequest);
         if(createduserdto==null) return new ResponseEntity<>(
-                "customer not created", HttpStatus.BAD_REQUEST
+                "Admin not created", HttpStatus.BAD_REQUEST
         );
         return new ResponseEntity<>(createduserdto,HttpStatus.CREATED);
 
