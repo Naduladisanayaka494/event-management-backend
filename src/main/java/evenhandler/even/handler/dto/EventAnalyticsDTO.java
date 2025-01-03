@@ -19,5 +19,5 @@ public class EventAnalyticsDTO {
     public void setCapacityUtilization(double capacityUtilization) {
         this.capacityUtilization = capacityUtilization;
     }
-// Getters and setters
+
 }

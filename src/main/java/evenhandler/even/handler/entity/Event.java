@@ -109,5 +109,5 @@ public class Event {
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Attendee> attendees;
 
-    // Getters and setters
+
 }

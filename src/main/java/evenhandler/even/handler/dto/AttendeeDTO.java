@@ -28,5 +28,5 @@ public class AttendeeDTO {
     public void setEmail(String email) {
         this.email = email;
     }
-// Getters and setters
+
 }

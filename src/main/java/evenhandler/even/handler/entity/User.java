@@ -5,8 +5,7 @@ package evenhandler.even.handler.entity;
 import evenhandler.even.handler.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

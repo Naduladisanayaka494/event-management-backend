@@ -53,5 +53,5 @@ public class Attendee {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    // Getters and setters
+
 }

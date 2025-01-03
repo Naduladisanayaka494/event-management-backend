@@ -135,7 +135,7 @@ public class EventService {
         Event event = eventOpt.get();
         EventAnalyticsDTO analyticsDTO = new EventAnalyticsDTO();
         analyticsDTO.setTotalAttendees(attendeeRepository.findByEventId(eventId).size());
-        analyticsDTO.setCapacityUtilization((double) analyticsDTO.getTotalAttendees() / event.getCapacity() * 100000);
+        analyticsDTO.setCapacityUtilization((double) analyticsDTO.getTotalAttendees() / event.getCapacity() * 100);
         return analyticsDTO;
     }
 }

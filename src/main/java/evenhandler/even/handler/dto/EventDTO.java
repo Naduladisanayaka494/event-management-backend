@@ -86,5 +86,5 @@ public class EventDTO {
     private int remainingCapacity;
     private String tags;
 
-    // Getters and setters
+
 }
