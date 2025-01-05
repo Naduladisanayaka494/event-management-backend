@@ -5,14 +5,19 @@ import evenhandler.even.handler.dto.EventAnalyticsDTO;
 import evenhandler.even.handler.dto.EventDTO;
 import evenhandler.even.handler.entity.Attendee;
 import evenhandler.even.handler.entity.Event;
+import evenhandler.even.handler.entity.User;
+import evenhandler.even.handler.exception.EventNotFoundException;
+import evenhandler.even.handler.exception.UserNotFoundException;
 import evenhandler.even.handler.repository.AttendeeRepository;
 import evenhandler.even.handler.repository.EventRepository;
+import evenhandler.even.handler.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
@@ -22,6 +27,9 @@ public class EventService {
 
     @Autowired
     private AttendeeRepository attendeeRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<EventDTO> getAllEvents(String date, String location, String tags) {
         // Add filtering logic here
@@ -138,4 +146,43 @@ public class EventService {
         analyticsDTO.setCapacityUtilization((double) analyticsDTO.getTotalAttendees() / event.getCapacity() * 100);
         return analyticsDTO;
     }
+
+    public void addEventForUser(Long eventId, Long userId) {
+        // Logic to associate a user with an event
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new EventNotFoundException("Event not found"));
+
+        // Assume there's a mapping or association table for user-event relation
+        user.getEvents().add(event);  // You may need a join table if many-to-many
+        userRepository.save(user);
+    }
+
+    public List<EventDTO> getEventsForUser(Long userId) {
+        // Logic to fetch all events associated with a user
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        // Fetch all events for the user
+        List<Event> events = user.getEvents();
+
+        // Map Event entities to EventDTO using setters
+        return events.stream()
+                .map(event -> {
+                    EventDTO eventDTO = new EventDTO();
+                    eventDTO.setId(event.getId());
+                    eventDTO.setName(event.getName());
+                    eventDTO.setDescription(event.getDescription());
+                    eventDTO.setDate(event.getDate());
+                    eventDTO.setLocation(event.getLocation());
+                    eventDTO.setTags(event.getTags());
+                    eventDTO.setCreatedBy(event.getCreatedBy());
+                    eventDTO.setCapacity(event.getCapacity());
+                    eventDTO.setRemainingCapacity(event.getRemainingCapacity());
+                    return eventDTO;
+                })
+                .collect(Collectors.toList());
+    }
+
+
+
 }

@@ -61,4 +61,16 @@ public class EventController {
         EventAnalyticsDTO analyticsDTO = eventService.getEventAnalytics(eventId);
         return ResponseEntity.ok(analyticsDTO);
     }
+
+    @PostMapping("/{eventId}/users/{userId}")
+    public ResponseEntity<Void> addEventForUser(@PathVariable Long eventId, @PathVariable Long userId) {
+        eventService.addEventForUser(eventId, userId);
+        return ResponseEntity.status(201).build();
+    }
+
+    @GetMapping("/users/{userId}/events")
+    public ResponseEntity<List<EventDTO>> getEventIdsForUser(@PathVariable Long userId) {
+        List<EventDTO> eventIds = eventService.getEventsForUser(userId);
+        return ResponseEntity.ok(eventIds);
+    }
 }
