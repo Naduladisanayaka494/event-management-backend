@@ -19,12 +19,11 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -49,7 +48,19 @@ public class AuthController {
     public ResponseEntity<?> signup(@RequestBody SignUpRequest signupRequest) {
         if(authService.hasAdminwithemail(signupRequest.getEmail()))
             return new ResponseEntity<>("email already exists",HttpStatus.NOT_ACCEPTABLE);
-        UserDto createduserdto  =authService.createdCustomer(signupRequest);
+        UserDto createduserdto  =authService.createdDataEntry(signupRequest);
+        if(createduserdto==null) return new ResponseEntity<>(
+                "Admin not created", HttpStatus.BAD_REQUEST
+        );
+        return new ResponseEntity<>(createduserdto,HttpStatus.CREATED);
+
+    }
+
+    @PostMapping("/signup/admin")
+    public ResponseEntity<?> signupAdmin(@RequestBody SignUpRequest signupRequest) {
+        if(authService.hasAdminwithemail(signupRequest.getEmail()))
+            return new ResponseEntity<>("email already exists",HttpStatus.NOT_ACCEPTABLE);
+        UserDto createduserdto  =authService.createdAdmin(signupRequest);
         if(createduserdto==null) return new ResponseEntity<>(
                 "Admin not created", HttpStatus.BAD_REQUEST
         );
@@ -76,5 +87,20 @@ public class AuthController {
         }
         return authenticationResponse;
 
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserDto> userDtos = users.stream().map(user -> {
+            UserDto userDto = new UserDto();
+            userDto.setId(user.getId());
+            userDto.setName(user.getName());
+            userDto.setEmail(user.getEmail());
+            userDto.setUserRole(user.getUserRole());
+            return userDto;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(userDtos);
     }
 }

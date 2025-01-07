@@ -18,7 +18,20 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public UserDto createdCustomer(SignUpRequest signuprequest) {
+    public UserDto createdDataEntry(SignUpRequest signuprequest) {
+        User user = new User();
+        user.setName(signuprequest.getName());
+        user.setEmail(signuprequest.getEmail());
+        user.setPassword(new BCryptPasswordEncoder().encode(signuprequest.getPassword()));
+        user.setUserRole(UserRole.DataEntry);
+        User createduser  =userRepository.save(user);
+        UserDto userdto = new UserDto();
+        userdto.setId(createduser.getId());
+        return userdto;
+    }
+
+    @Override
+    public UserDto createdAdmin(SignUpRequest signuprequest) {
         User user = new User();
         user.setName(signuprequest.getName());
         user.setEmail(signuprequest.getEmail());
